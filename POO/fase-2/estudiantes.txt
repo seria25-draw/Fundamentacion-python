@@ -1,0 +1,5 @@
+Codigo: 001, Nombre: fernando, Nota: 3.0 Estado: Aprueba
+Codigo: 002, Nombre: miguel, Nota: 2.0 Estado: Reprueba
+Codigo: 003, Nombre: liceth, Nota: 3.8 Estado: Aprueba
+Codigo: 004, Nombre: maria c, Nota: 4.2 Estado: Aprueba
+Codigo: 005, Nombre: santiago, Nota: 3.5 Estado: Aprueba
