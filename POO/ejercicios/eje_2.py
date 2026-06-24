@@ -15,11 +15,16 @@ class SistemaUsuarios:
 
     def registrar_usuario(self):
 
-        documento = input("Ingrese el documento del usuario sin puntos: ")
+        documento = input("Ingrese el documento del usuario sin puntos: ").strip()
 
         if documento == "":
             print("El documento no puede estar vacío")
             return
+
+        if not documento.isdigit():
+            print("Error: El documento debe contener solo números")
+            return
+
 
         for us in self.usuarios:
             if us.documento == documento:
@@ -44,16 +49,24 @@ class SistemaUsuarios:
                 print("Error: El correo no es válido")
                 continue
 
-            estado = input("Ingrese el estado del usuario (Activo/Inactivo): ")
+            print("""
+            ===== ESTADOS =====
+            1. Activo
+            2. Inactivo
+            ==================
+            """)
 
-            if estado == "":
-                print("El estado no puede estar vacío")
-                continue
+            opcion_estado = input("Seleccione el estado: ")
 
-            if estado.lower() not in ["activo", "inactivo"]:
+            if opcion_estado == "1":
+                estado = "Activo"
+            elif opcion_estado == "2":
+                estado = "Inactivo"
+            else:
                 print("Estado no válido")
                 continue
 
+            
             print("""
             ===== ROLES =====
             1. Administrador
@@ -130,6 +143,104 @@ class SistemaUsuarios:
         else:
             print("Opcion invalida")
 
+    def actualizar_usuario(self):
+
+        documento = input("Ingrese el documento del usuario a actualizar: ")
+
+        for us in self.usuarios:
+                
+                if us.documento == documento:
+
+                    print("\nUsuario encontrado:")
+                    print(us.mostrar_info())
+
+                    print("""
+                    ===== ACTUALIZAR USUARIO =====
+                    1. Nombre
+                    2. Correo
+                    3. Rol
+                    4. Estado
+                    =============================
+                    """)
+                
+                    opcion = input("Seleccione una opción: ")
+
+                    if opcion == "1":
+
+                        nuevo_nombre = input("Ingrese el nuevo nombre: ")
+
+                        if nuevo_nombre == "":
+                            print("El nombre no puede estar vacío")
+                            return
+
+                        us.nombre = nuevo_nombre
+                        print("Nombre actualizado correctamente")
+
+                    elif opcion == "2":
+                        nuevo_correo = input("Ingrese el nuevo correo: ")
+
+                        if nuevo_correo == "":
+                            print("El correo no puede estar vacío")
+                            return
+
+                        if "@" not in nuevo_correo or "." not in nuevo_correo:
+                            print("Correo no válido")
+                            return
+
+                        us.correo = nuevo_correo
+                        print("Correo actualizado correctamente")
+                    
+                    elif opcion == "3":
+
+                        print("""
+                        ===== ROLES =====
+                        1. Administrador
+                        2. Aprendiz
+                        3. Instructor
+                        =================
+                        """)
+
+                        opcion_rol = input("Seleccione el nuevo rol: ")
+
+                        if opcion_rol == "1":
+                            us.rol = "Administrador"
+                        elif opcion_rol == "2":
+                            us.rol = "Aprendiz"
+                        elif opcion_rol == "3":
+                            us.rol = "Instructor"
+                        else:
+                            print("Rol no válido")
+                            return
+
+                        print("Rol actualizado correctamente")
+
+                    elif opcion == "4":
+
+                        print("""
+                        ===== ESTADOS =====
+                        1. Activo
+                        2. Inactivo
+                        ==================
+                        """)
+
+                        opcion_estado = input("Seleccione el nuevo estado: ")
+
+                        if opcion_estado == "1":
+                            us.estado = "Activo"
+                        elif opcion_estado == "2":
+                            us.estado = "Inactivo"
+                        else:
+                            print("Estado no válido")
+                            return
+
+                        print("Estado actualizado correctamente")
+                    else:
+                        print("Opción no válida")
+
+                    return
+                
+                print("Usuario no encontrado")
+
     def eliminar_usuario(self):
         documento = input("Ingrese el documento del usuario a eliminar: ")
         for us in self.usuarios:
@@ -140,6 +251,46 @@ class SistemaUsuarios:
 
         print("Usuario no encontrado")
         
+    def mostrar_activos(self):
+
+        if len(self.usuarios) == 0:
+            print("No hay usuarios registrados")
+            return
+
+        print("\nLISTA DE USUARIOS ACTIVOS")
+
+        encontrados = False
+
+        for us in self.usuarios:
+            if us.estado == "Activo":
+                print(us.mostrar_info())
+                encontrados = True
+
+        if not encontrados:
+            print("No hay usuarios activos")
+
+    def contar_roles(self):
+
+        administradores = 0
+        aprendices = 0
+        instructores = 0
+
+        for us in self.usuarios:
+
+            if us.rol == "Administrador":
+                administradores += 1
+
+            elif us.rol == "Aprendiz":
+                aprendices += 1
+
+            elif us.rol == "Instructor":
+                instructores += 1
+
+        print("\n===== USUARIOS POR ROL =====")
+        print(f"Administradores: {administradores}")
+        print(f"Aprendices: {aprendices}")
+        print(f"Instructores: {instructores}")
+
     def guardar_archivo(self):
         with open("usuarios.txt", "w") as archivo:
             for us in self.usuarios:
@@ -190,3 +341,7 @@ class SistemaUsuarios:
 
 sistema = SistemaUsuarios()
 sistema.menu()
+
+
+
+    
